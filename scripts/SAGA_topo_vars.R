@@ -9,7 +9,7 @@ saga <- saga_gis(cores = future::availableCores(),
 
 dem_dir <- "/scratch/project_2007415/microclim_topo/"
 rois <- st_read("GIS/area_polygons_all.gpkg") %>% 
-  filter(area != "RAS")
+  filter(area %in% c("RAS","MAT","VIN"))
 
 for(i in rois$area){
   # i <- "ULV"
@@ -26,27 +26,32 @@ for(i in rois$area){
     print("Calculating SAGA wetness indices...")
     # SWI, suction 2
     swi <- saga$ta_hydrology$saga_wetness_index(dem = dem2_filled, suction = 2, 
-                                                area_type = 2, slope_type = 0,)
+                                                area_type = 2, slope_type = 0)
+    names(swi$twi) <- "swi_suction2"
     writeRaster(round(swi$twi*100), paste0(dem_dir, "/", i, "/swi_suction2.tif"), 
                 filetype = "GTiff", overwrite = T, datatype = "INT2S")
     # SWI, suction 16
     swi <- saga$ta_hydrology$saga_wetness_index(dem = dem2_filled, suction = 16, 
-                                                area_type = 2, slope_type = 0,)
+                                                area_type = 2, slope_type = 0)
+    names(swi$twi) <- "swi_suction16"
     writeRaster(round(swi$twi*100), paste0(dem_dir, "/", i, "/swi_suction16.tif"), 
                 filetype = "GTiff", overwrite = T, datatype = "INT2S")
     # SWI, suction 64
     swi <- saga$ta_hydrology$saga_wetness_index(dem = dem2_filled, suction = 64, 
-                                                area_type = 2, slope_type = 0,)
+                                                area_type = 2, slope_type = 0)
+    names(swi$twi) <- "swi_suction64"
     writeRaster(round(swi$twi*100), paste0(dem_dir, "/", i, "/swi_suction64.tif"), 
                 filetype = "GTiff", overwrite = T, datatype = "INT2S")
     # SWI, suction 128
     swi <- saga$ta_hydrology$saga_wetness_index(dem = dem2_filled, suction = 128, 
-                                                area_type = 2, slope_type = 0,)
+                                                area_type = 2, slope_type = 0)
+    names(swi$twi) <- "swi_suction128"
     writeRaster(round(swi$twi*100), paste0(dem_dir, "/", i, "/swi_suction128.tif"), 
                 filetype = "GTiff", overwrite = T, datatype = "INT2S")
     # SWI, suction 256
     swi <- saga$ta_hydrology$saga_wetness_index(dem = dem2_filled, suction = 256, 
-                                                area_type = 2, slope_type = 0,)
+                                                area_type = 2, slope_type = 0)
+    names(swi$twi) <- "swi_suction256"
     writeRaster(round(swi$twi*100), paste0(dem_dir, "/", i, "/swi_suction256.tif"), 
                 filetype = "GTiff", overwrite = T, datatype = "INT2S")
   }
